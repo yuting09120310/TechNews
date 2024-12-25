@@ -121,7 +121,7 @@ namespace TechNews.Areas.BackEnd.Controllers
             };
 
             // 傳遞下拉選單資料
-            ViewData["GroupId"] = new SelectList(_context.AdminGroups, "GroupId", "GroupName", adminsEditViewModel.GroupId);
+            ViewData["GroupId"] = new SelectList(_context.AdminGroups, "GroupName", "GroupName", adminsEditViewModel.GroupId);
             return View(adminsEditViewModel);
         }
 

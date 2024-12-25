@@ -1,0 +1,83 @@
+﻿@model TechNews.Areas.BackEnd.ViewModel.Banners.BannerEditViewModel
+
+@{
+    ViewData["Title"] = "編輯橫幅";
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">編輯橫幅</h1>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <form asp-action="Edit" enctype="multipart/form-data" method="post">
+                <input type="hidden" asp-for="BannerId" />
+
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label">標題</label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label">描述</label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CurrentImagePath" class="control-label">現有圖片</label>
+                    @if (!string.IsNullOrEmpty(Model.CurrentImagePath))
+                    {
+                        <div class="mb-2">
+                            <img src="@Url.Content("~/" + Model.CurrentImagePath)" alt="現有圖片" class="img-thumbnail" style="max-width: 300px;" />
+                        </div>
+                    }
+                    <label asp-for="ImageFile" class="control-label">更新圖片</label>
+                    <input asp-for="ImageFile" type="file" class="form-control" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ImageAlt" class="control-label">圖片替代文字</label>
+                    <input asp-for="ImageAlt" class="form-control" />
+                    <span asp-validation-for="ImageAlt" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="IsActive" class="control-label">啟用狀態</label>
+                    <select asp-for="IsActive" class="form-control">
+                        <option value="true">啟用</option>
+                        <option value="false">停用</option>
+                    </select>
+                    <span asp-validation-for="IsActive" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PublishDate" class="control-label">發佈日期</label>
+                    <input asp-for="PublishDate" class="form-control" type="date" />
+                    <span asp-validation-for="PublishDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ExpireDate" class="control-label">到期日期</label>
+                    <input asp-for="ExpireDate" class="form-control" type="date" />
+                    <span asp-validation-for="ExpireDate" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> 儲存
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> 返回
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

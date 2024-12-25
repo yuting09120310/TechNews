@@ -1,0 +1,91 @@
+﻿@model IEnumerable<TechNews.Areas.BackEnd.ViewModel.Banners.BannerIndexViewModel>
+
+@{
+    ViewData["Title"] = "橫幅管理";
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">橫幅管理</h1>
+
+    <p>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> 新增橫幅
+        </a>
+    </p>
+
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">橫幅列表</h6>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>標題</th>
+                        <th>描述</th>
+                        <th>圖片</th>
+                        <th>啟用狀態</th>
+                        <th>發佈日期</th>
+                        <th>到期日期</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Title</td>
+                            <td>@item.Description</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.ImagePath))
+                                {
+                                    <img src="@item.ImagePath" alt="Banner Image" class="img-thumbnail" style="width: 120px;" />
+                                }
+                                else
+                                {
+                                    <span class="text-muted">無圖片</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.IsActive)
+                                {
+                                    <span class="badge badge-success">啟用</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-secondary">停用</span>
+                                }
+                            </td>
+                            <td>@item.PublishDate.ToString("yyyy-MM-dd")</td>
+                            <td>
+
+                                @if (item.ExpireDate?.ToString("yyyy-MM-dd") != null)
+                                {
+                                    <span>@item.ExpireDate?.ToString("yyyy-MM-dd")</span>
+                                }
+                                else
+                                {
+                                    <span>無</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a asp-action="Edit" asp-route-id="@item.BannerId" class="btn btn-sm btn-warning">
+                                        <i class="fas fa-edit"></i> 編輯
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.BannerId" class="btn btn-sm btn-info">
+                                        <i class="fas fa-info-circle"></i> 詳細
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.BannerId" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i> 刪除
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
