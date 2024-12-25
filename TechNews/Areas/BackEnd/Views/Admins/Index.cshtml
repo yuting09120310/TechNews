@@ -1,0 +1,66 @@
+﻿@model IEnumerable<TechNews.Areas.BackEnd.ViewModel.Admins.AdminsIndexViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">帳號設定</h1>
+    <p class="mb-4">
+        在此頁面，您可以管理後台帳號，包括新增、編輯或刪除帳號，並查看帳號的詳細資訊和狀態。
+    </p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">帳號清單</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>帳號</th>
+                            <th>名稱</th>
+                            <th>群組</th>
+                            <th>啟用狀態</th>
+                            <th>最後登入時間</th>
+                            <th>更新時間</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.AdminAccount</td>
+                                <td>@item.AdminName</td>
+                                <td>@item.GroupName</td>
+                                <td>@(item.IsActive ? "啟用" : "停用")</td>
+                                <td>@item.LastLogin?.ToString("yyyy-MM-dd HH:mm")</td>
+                                <td>@item.ModifiedDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.AdminId">編輯</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.AdminId">刪除</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+

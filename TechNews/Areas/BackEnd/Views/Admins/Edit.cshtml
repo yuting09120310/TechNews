@@ -1,0 +1,82 @@
+﻿@model TechNews.Areas.BackEnd.ViewModel.Admins.AdminsEditViewModel
+
+@{
+    ViewData["Title"] = "編輯管理員";
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">編輯管理員</h1>
+
+    <!-- Description -->
+    <p class="text-muted">
+        修改管理員資料，包括帳號、名稱、所屬群組與啟用狀態。完成後，請點擊 <strong>提交</strong> 儲存變更。
+    </p>
+
+    <!-- Edit Form -->
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">管理員詳細資訊</h6>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="AdminId" />
+
+                <!-- Admin Account -->
+                <div class="form-group">
+                    <label asp-for="AdminAccount" class="font-weight-bold">帳號</label>
+                    <input asp-for="AdminAccount" class="form-control" />
+                    <span asp-validation-for="AdminAccount" class="text-danger"></span>
+                </div>
+
+                <!-- Admin Password -->
+                <div class="form-group">
+                    <label asp-for="AdminPassword" class="font-weight-bold">密碼</label>
+                    <input asp-for="AdminPassword" class="form-control" type="password" />
+                    <span asp-validation-for="AdminPassword" class="text-danger"></span>
+                </div>
+
+                <!-- Admin Name -->
+                <div class="form-group">
+                    <label asp-for="AdminName" class="font-weight-bold">姓名</label>
+                    <input asp-for="AdminName" class="form-control" />
+                    <span asp-validation-for="AdminName" class="text-danger"></span>
+                </div>
+
+                <!-- Group -->
+                <div class="form-group">
+                    <label asp-for="GroupId" class="font-weight-bold">所屬群組</label>
+                    <select asp-for="GroupId" class="form-control" asp-items="ViewBag.GroupId"></select>
+                    <span asp-validation-for="GroupId" class="text-danger"></span>
+                </div>
+
+                <!-- Active Status -->
+                <div class="form-group">
+                    <label asp-for="IsActive" class="font-weight-bold">啟用狀態</label>
+                    <select asp-for="IsActive" class="form-control">
+                        <option value="true">啟用</option>
+                        <option value="false">停用</option>
+                    </select>
+                    <span asp-validation-for="IsActive" class="text-danger"></span>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-primary mr-2">
+                        <i class="fas fa-save"></i> 提交
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> 返回
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

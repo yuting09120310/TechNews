@@ -1,0 +1,109 @@
+﻿@model TechNews.Areas.BackEnd.ViewModel.AdminGroups.AdminGroupsEditViewModel
+
+@{
+    ViewData["Title"] = "群組編輯";
+}
+
+<div class="container-fluid">
+    <!-- Page Title -->
+    <h1 class="h3 mb-4 text-gray-800">群組編輯</h1>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <!-- Form -->
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="GroupId" />
+
+                <!-- Group Name -->
+                <div class="form-group">
+                    <label asp-for="GroupName" class="font-weight-bold">群組名稱</label>
+                    <input asp-for="GroupName" class="form-control" />
+                    <span asp-validation-for="GroupName" class="text-danger"></span>
+                </div>
+
+                <!-- Group Info -->
+                <div class="form-group">
+                    <label asp-for="GroupInfo" class="font-weight-bold">群組資訊</label>
+                    <textarea asp-for="GroupInfo" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="GroupInfo" class="text-danger"></span>
+                </div>
+
+                <!-- Group Publish -->
+                <div class="form-group">
+                    <label asp-for="IsActive" class="font-weight-bold">是否啟用</label>
+                    <select asp-for="IsActive" class="form-control">
+                        <option value="true">啟用</option>
+                        <option value="false">停用</option>
+                    </select>
+                    <span asp-validation-for="IsActive" class="text-danger"></span>
+                </div>
+
+                <!-- Permissions Table -->
+                <div class="table-responsive mt-4">
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>功能名稱</th>
+                                <th>新增權</th>
+                                <th>查看權</th>
+                                <th>編輯權</th>
+                                <th>刪除權</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (MenuGroup group in Model.MenuGroupModels)
+                            {
+                                <tr class="table-primary">
+                                    <td colspan="5">@group.Name</td>
+                                </tr>
+                                @foreach (MenuSub sub in Model.MenuSubModels)
+                                {
+                                    if (sub.MenuGroupId.Equals(group.MenuGroupId))
+                                    {
+                                        AdminRole ar = Model.AdminRoleModels.FirstOrDefault(model_ar => model_ar.MenuId.Equals(sub.MenuId));
+                                        <tr>
+                                            <td>@sub.Name</td>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="Role_@sub.MenuId" value="C" @(ar != null && ar.Permission.Contains("C") ? "checked" : "") />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="Role_@sub.MenuId" value="R" @(ar != null && ar.Permission.Contains("R") ? "checked" : "") />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="Role_@sub.MenuId" value="U" @(ar != null && ar.Permission.Contains("U") ? "checked" : "") />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="Role_@sub.MenuId" value="D" @(ar != null && ar.Permission.Contains("D") ? "checked" : "") />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-end mt-4 mb-4">
+                    <a asp-action="Index" class="btn btn-secondary mr-2">返回</a>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

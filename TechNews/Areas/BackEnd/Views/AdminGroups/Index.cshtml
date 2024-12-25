@@ -1,0 +1,57 @@
+﻿@model IEnumerable<TechNews.Areas.BackEnd.ViewModel.AdminGroups.AdminGroupsIndexViewModel>
+
+@{
+    ViewData["Title"] = "群組管理";
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">群組設定</h1>
+    <p class="mb-4">
+        在此頁面，您可以管理後台群組，包括新增、編輯或刪除群組，並查看群組的詳細資訊和狀態。
+    </p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">群組清單</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>群組名稱</th>
+                            <th>群組資訊</th>
+                            <th>啟用狀態</th>
+                            <th>修改日期</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var group in Model)
+                        {
+                            <tr>
+                                <td>@group.GroupName</td>
+                                <td>@group.GroupInfo</td>
+                                <td>
+                                    <span class="badge @(group.IsActive ? "badge-success" : "badge-secondary")">
+                                        @(group.IsActive ? "啟用" : "停用")
+                                    </span>
+                                </td>
+                                <td>@group.ModifiedDate.ToString("yyyy/MM/dd tt hh:mm:ss")</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@group.GroupId" class="btn btn-primary btn-sm">編輯</a>
+                                    <a asp-action="Details" asp-route-id="@group.GroupId" class="btn btn-info btn-sm">詳細</a>
+                                    <a asp-action="Delete" asp-route-id="@group.GroupId" class="btn btn-danger btn-sm">刪除</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

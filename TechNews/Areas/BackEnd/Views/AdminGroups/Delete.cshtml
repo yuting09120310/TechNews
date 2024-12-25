@@ -1,0 +1,59 @@
+﻿@model TechNews.Areas.BackEnd.Models.AdminGroup
+
+@{
+    ViewData["Title"] = "刪除群組";
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">刪除群組</h1>
+
+    <!-- Description -->
+    <p class="text-muted">
+        您即將刪除以下群組資料，該操作無法恢復。請確認是否要繼續。
+    </p>
+
+    <!-- Group Details -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-danger">群組詳細資訊</h6>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3 font-weight-bold">群組名稱</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.GroupName)</dd>
+
+                <dt class="col-sm-3 font-weight-bold">群組描述</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.GroupInfo)</dd>
+
+                <dt class="col-sm-3 font-weight-bold">啟用狀態</dt>
+                <dd class="col-sm-9">
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge badge-success">啟用</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-secondary">停用</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3 font-weight-bold">最後修改時間</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.ModifiedDate)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="d-flex justify-content-end mt-4">
+        <form asp-action="Delete" class="mr-3">
+            <input type="hidden" asp-for="GroupId" />
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash-alt"></i> 確認刪除
+            </button>
+        </form>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> 返回列表
+        </a>
+    </div>
+</div>
