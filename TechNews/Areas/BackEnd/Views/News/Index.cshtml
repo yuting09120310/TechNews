@@ -1,0 +1,80 @@
+﻿@model IEnumerable<TechNews.Areas.BackEnd.ViewModels.News.NewsIndexViewModel>
+
+@{
+    ViewData["Title"] = "新聞管理";
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">新聞管理</h1>
+
+    <!-- Add Button -->
+    <div class="d-flex justify-content-end mb-3">
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> 新增新聞
+        </a>
+    </div>
+
+    <!-- News Table -->
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">新聞列表</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>標題</th>
+                            <th>分類</th>
+                            <th>狀態</th>
+                            <th>發佈時間</th>
+                            <th>瀏覽次數</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.NewsId</td>
+                                <td>@item.Title</td>
+                                <td>@item.CategoryName</td>
+                                <td>
+                                    @if (item.IsActive == true)
+                                    {
+                                        <span class="badge badge-success">啟用</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-secondary">停用</span>
+                                    }
+                                </td>
+                                <td>@item.PublishDate?.ToString("yyyy-MM-dd")</td>
+                                <td>@item.ViewCount</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.NewsId" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i> 編輯
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.NewsId" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i> 刪除
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- 引入 DataTable 的腳本，讓表格更好看 -->
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    </script>
+}

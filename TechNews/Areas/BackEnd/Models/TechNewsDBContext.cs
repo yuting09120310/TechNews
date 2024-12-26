@@ -227,8 +227,6 @@ namespace TechNews.Areas.BackEnd.Models
 
                 entity.ToTable("NewsCategory");
 
-                entity.Property(e => e.CategoryCode).HasMaxLength(50);
-
                 entity.Property(e => e.IsActive)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
@@ -238,8 +236,6 @@ namespace TechNews.Areas.BackEnd.Models
                     .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Name).HasMaxLength(50);
-
-                entity.Property(e => e.StoreId).HasColumnName("StoreID");
 
                 entity.HasOne(d => d.Parent)
                     .WithMany(p => p.InverseParent)
