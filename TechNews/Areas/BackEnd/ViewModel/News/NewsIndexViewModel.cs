@@ -1,4 +1,4 @@
-﻿namespace TechNews.Areas.BackEnd.ViewModels.News
+﻿namespace TechNews.Areas.BackEnd.ViewModel.News
 {
     public class NewsIndexViewModel
     {

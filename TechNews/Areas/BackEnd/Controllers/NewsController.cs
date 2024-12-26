@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TechNews.Areas.BackEnd.Models;
-using TechNews.Areas.BackEnd.ViewModels.News;
+using TechNews.Areas.BackEnd.ViewModel.News;
 
 namespace TechNews.Areas.BackEnd.Controllers
 {
@@ -118,58 +118,91 @@ namespace TechNews.Areas.BackEnd.Controllers
         }
 
 
-        // GET: BackEnd/News/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null || _context.News == null)
+            GetMenu();
+
+            var news = _context.News.FirstOrDefault(n => n.NewsId == id);
+            if (news == null) return NotFound();
+
+            var viewModel = new NewsEditViewModel
             {
-                return NotFound();
+                Id = news.NewsId,
+                Title = news.Title,
+                Description = news.Description,
+                Content = news.Content,
+                CategoryId = news.CategoryId,
+                IsActive = news.IsActive,
+                PublishDate = news.PublishDate,
+                ExistingImagePath = news.ImagePath
+            };
+
+            ViewData["CategoryId"] = new SelectList(_context.NewsCategories, "CategoryId", "Name");
+            return View(viewModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(NewsEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewData["CategoryId"] = new SelectList(_context.NewsCategories, "CategoryId", "Name", model.CategoryId);
+                return View(model);
             }
 
-            var news = await _context.News.FindAsync(id);
+            var news = await _context.News.FindAsync(model.Id);
             if (news == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.NewsCategories, "CategoryId", "CategoryId", news.CategoryId);
-            return View(news);
-        }
 
-        // POST: BackEnd/News/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("NewsId,StoreId,LanguageCode,CategoryId,SortOrder,Title,Description,Content,ImagePath,ImageUrl,ImageAlt,IsActive,ViewCount,PublishDate,ExpireDate,Tags,ModifiedDate")] News news)
-        {
-            if (id != news.NewsId)
+            // 更新新聞屬性
+            news.Title = model.Title;
+            news.Description = model.Description;
+            news.Content = model.Content;
+            news.CategoryId = model.CategoryId;
+            news.IsActive = model.IsActive;
+            news.PublishDate = model.PublishDate;
+            news.ModifiedDate = DateTime.UtcNow;
+
+            // 處理圖片上傳
+            if (model.ImageFile != null)
             {
-                return NotFound();
+                var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads", "News");
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImageFile.FileName;
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                // 確保目錄存在
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await model.ImageFile.CopyToAsync(fileStream);
+                }
+
+                news.ImagePath = "/uploads/News/" + uniqueFileName;
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(news);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!NewsExists(news.NewsId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _context.Update(news);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.NewsCategories, "CategoryId", "CategoryId", news.CategoryId);
-            return View(news);
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $"更新失敗: {ex.Message}");
+                ViewData["CategoryId"] = new SelectList(_context.NewsCategories, "CategoryId", "Name", model.CategoryId);
+                return View(model);
+            }
         }
+
+
 
         // GET: BackEnd/News/Delete/5
         public async Task<IActionResult> Delete(int? id)

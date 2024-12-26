@@ -1,109 +1,101 @@
-﻿@model TechNews.Areas.BackEnd.Models.News
+﻿@model TechNews.Areas.BackEnd.ViewModel.News.NewsEditViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "編輯新聞";
 }
 
-<h1>Edit</h1>
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">編輯新聞</h1>
 
-<h4>News</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="NewsId" />
-            <div class="form-group">
-                <label asp-for="StoreId" class="control-label"></label>
-                <input asp-for="StoreId" class="form-control" />
-                <span asp-validation-for="StoreId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LanguageCode" class="control-label"></label>
-                <input asp-for="LanguageCode" class="form-control" />
-                <span asp-validation-for="LanguageCode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SortOrder" class="control-label"></label>
-                <input asp-for="SortOrder" class="form-control" />
-                <span asp-validation-for="SortOrder" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImagePath" class="control-label"></label>
-                <input asp-for="ImagePath" class="form-control" />
-                <span asp-validation-for="ImagePath" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageAlt" class="control-label"></label>
-                <input asp-for="ImageAlt" class="form-control" />
-                <span asp-validation-for="ImageAlt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IsActive" class="control-label"></label>
-                <input asp-for="IsActive" class="form-control" />
-                <span asp-validation-for="IsActive" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ViewCount" class="control-label"></label>
-                <input asp-for="ViewCount" class="form-control" />
-                <span asp-validation-for="ViewCount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PublishDate" class="control-label"></label>
-                <input asp-for="PublishDate" class="form-control" />
-                <span asp-validation-for="PublishDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ExpireDate" class="control-label"></label>
-                <input asp-for="ExpireDate" class="form-control" />
-                <span asp-validation-for="ExpireDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Tags" class="control-label"></label>
-                <input asp-for="Tags" class="form-control" />
-                <span asp-validation-for="Tags" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ModifiedDate" class="control-label"></label>
-                <input asp-for="ModifiedDate" class="form-control" />
-                <span asp-validation-for="ModifiedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    <!-- Description -->
+    <p class="text-muted">
+        在此編輯新聞內容，包括標題、簡介、內容、分類與其他相關資訊。完成後，請點擊 <strong>提交</strong> 儲存更改。
+    </p>
+
+    <!-- Edit Form -->
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">新聞詳細資訊</h6>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <!-- Title -->
+                <div class="form-group">
+                    <label asp-for="Title" class="font-weight-bold">新聞標題</label>
+                    <input asp-for="Title" class="form-control" placeholder="請輸入新聞標題" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label asp-for="Description" class="font-weight-bold">簡介</label>
+                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="請輸入簡介"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <!-- Content -->
+                <div class="form-group">
+                    <label asp-for="Content" class="font-weight-bold">內容</label>
+                    <textarea asp-for="Content" id="editor" class="form-control" rows="20" placeholder="請輸入新聞內容"></textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+
+                <!-- Category -->
+                <div class="form-group">
+                    <label asp-for="CategoryId" class="font-weight-bold">分類</label>
+                    <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId">
+                        <option value="">請選擇分類</option>
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+
+                <!-- Is Active -->
+                <div class="form-group">
+                    <label asp-for="IsActive" class="font-weight-bold">是否啟用</label>
+                    <select asp-for="IsActive" class="form-control">
+                        <option value="true">啟用</option>
+                        <option value="false">停用</option>
+                    </select>
+                    <span asp-validation-for="IsActive" class="text-danger"></span>
+                </div>
+
+                <!-- Publish Date -->
+                <div class="form-group">
+                    <label asp-for="PublishDate" class="font-weight-bold">發佈日期</label>
+                    <input asp-for="PublishDate" class="form-control" type="date" />
+                    <span asp-validation-for="PublishDate" class="text-danger"></span>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="form-group">
+                    <label asp-for="ImageFile" class="font-weight-bold">封面圖片</label>
+                    <input asp-for="ImageFile" class="form-control-file" type="file" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-primary mr-2">
+                        <i class="fas fa-save"></i> 提交
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> 返回
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdn.ckeditor.com/4.20.0/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('editor', {
+            filebrowserUploadUrl: '@Url.Action("UploadImage", "News")',
+            filebrowserUploadMethod: 'form'
+        });
+    </script>
 }

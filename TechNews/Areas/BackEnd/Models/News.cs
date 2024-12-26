@@ -21,7 +21,7 @@ namespace TechNews.Areas.BackEnd.Models
         public string? ImagePath { get; set; }
         public string? ImageUrl { get; set; }
         public string? ImageAlt { get; set; }
-        public bool? IsActive { get; set; }
+        public bool IsActive { get; set; }
         public int? ViewCount { get; set; }
         public DateTime? PublishDate { get; set; }
         public DateTime? ExpireDate { get; set; }
